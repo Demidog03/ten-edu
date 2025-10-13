@@ -1,0 +1,262 @@
+<!-- Skip-link для доступности -->
+<a class="skip-link" href="#hero-title">Перейти к контенту</a>
+
+<p-menubar class="topbar" [model]="[]">
+  <ng-template pTemplate="start">
+    <div class="brand" (click)="goPrograms()" aria-label="TenEdu — на главную">
+      <span class="brand__logo">T</span>
+      <span class="brand__name">TenEdu</span>
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="end">
+    <!-- ... внутри <ng-template pTemplate="end"> -->
+    <div class="topnav" role="navigation" aria-label="Основная навигация">
+      <button pButton label="Центры" class="p-button-text" (click)="goCenters()"></button>
+      <button pButton label="Программы" class="p-button-text" (click)="goPrograms()"></button>
+      <button pButton label="Лекторы" class="p-button-text" (click)="goLecturers()"></button>
+
+      <p-divider layout="vertical" class="hide-sm"></p-divider>
+
+      <div class="lang-switch hide-sm" role="group" aria-label="Выбор языка">
+        <button pButton label="KZ" class="p-button-text" (click)="setLang?.('kk')"></button>
+        <button pButton label="RU" class="p-button-text" (click)="setLang?.('ru')"></button>
+      </div>
+
+      <!-- Кнопка темы -->
+      <button
+        pButton
+        class="p-button-text"
+        [icon]="isDark() ? 'pi pi-sun' : 'pi pi-moon'"
+        [label]="isDark() ? 'Светлая' : 'Тёмная'"
+        (click)="toggleTheme()"
+        aria-label="Переключить тему">
+      </button>
+
+      <!-- мобильная иконка меню -->
+      <button pButton icon="pi pi-bars" class="p-button-text show-sm" (click)="toggleMobile()" aria-label="Открыть меню"></button>
+    </div>
+
+  </ng-template>
+</p-menubar>
+
+<p-drawer [(visible)]="mobileOpen" position="right" [modal]="true" [dismissible]="true" aria-label="Мобильное меню">
+  <div class="mobile-menu">
+    <button pButton label="Центры" class="p-button-text p-button-lg" (click)="goCenters(); toggleMobile()"></button>
+    <button pButton label="Программы" class="p-button-text p-button-lg" (click)="goPrograms(); toggleMobile()"></button>
+    <button pButton label="Лекторы" class="p-button-text p-button-lg" (click)="goLecturers(); toggleMobile()"></button>
+    <p-divider></p-divider>
+    <div class="lang-switch">
+      <button pButton label="KZ" class="p-button-text" (click)="setLang?.('kk')"></button>
+      <button pButton label="RU" class="p-button-text" (click)="setLang?.('ru')"></button>
+    </div>
+  </div>
+</p-drawer>
+
+<!-- Hero -->
+<section class="hero" aria-labelledby="hero-title">
+  <div class="container hero__grid">
+    <div class="hero__content">
+      <h1 id="hero-title">TenEdu — агрегатор учебных центров</h1>
+      <p>Находите программы обучения, лекторов и учебные центры. Подавайте заявки и получайте консультации.</p>
+
+      <div class="hero__actions" role="search">
+        <span class="sr-only" id="search-hint">Введите запрос и нажмите Enter</span>
+        <p-inputGroup>
+          <input pInputText [(ngModel)]="queryValue" (keyup.enter)="goPrograms()"
+                 placeholder="Поиск программ и центров" aria-describedby="search-hint" />
+          <button pButton label="Искать" icon="pi pi-search" (click)="goPrograms()"></button>
+        </p-inputGroup>
+      </div>
+
+      <div class="hero__cta">
+        <button pButton label="Все центры" (click)="goCenters()" class="p-button-outlined"></button>
+        <button pButton label="Все программы" (click)="goPrograms()"></button>
+        <button pButton label="Войти / Регистрация" class="p-button-text" (click)="goPrograms()"></button>
+      </div>
+
+      <div class="hero__quick">
+        <span class="muted">Популярные города:</span>
+        <div class="chips">
+          <p-chip label="Астана" (click)="filterByCity?.('Астана')"></p-chip>
+          <p-chip label="Алматы" (click)="filterByCity?.('Алматы')"></p-chip>
+          <p-chip label="Шымкент" (click)="filterByCity?.('Шымкент')"></p-chip>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero__media" aria-hidden="true">
+      <div class="hero__card">
+        <i class="pi pi-graduation-cap"></i>
+        <div>
+          <div class="hero__card-title">Обучение</div>
+          <div class="muted">Курсы и повышения квалификации</div>
+        </div>
+      </div>
+      <div class="hero__card">
+        <i class="pi pi-users"></i>
+        <div>
+          <div class="hero__card-title">Лекторы</div>
+          <div class="muted">Приглашенные эксперты</div>
+        </div>
+      </div>
+      <div class="hero__card">
+        <i class="pi pi-send"></i>
+        <div>
+          <div class="hero__card-title">Заявки</div>
+          <div class="muted">Быстрая консультация</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Цифры / доверие -->
+<section class="stats" aria-label="Статистика платформы">
+  <div class="container stats__grid">
+    <p-card class="stat"><ng-template pTemplate="content"><div class="stat__value">50+</div><div class="stat__label">учебных центров</div></ng-template></p-card>
+    <p-card class="stat"><ng-template pTemplate="content"><div class="stat__value">200+</div><div class="stat__label">программ</div></ng-template></p-card>
+    <p-card class="stat"><ng-template pTemplate="content"><div class="stat__value">1000+</div><div class="stat__label">слушателей</div></ng-template></p-card>
+  </div>
+</section>
+
+<!-- Топ центров -->
+<section class="section" aria-labelledby="centers-title">
+  <div class="container">
+    <div class="section__header">
+      <h2 id="centers-title">Учебные центры</h2>
+      <button pButton label="Смотреть все" class="p-button-text" (click)="goCenters()"></button>
+    </div>
+
+    <div class="cards">
+      <ng-container *ngIf="!loading(); else centersSkeleton">
+        <p-card *ngFor="let c of centers()" class="card card--hover" (click)="openCenter(c.id)" [style]="{'cursor':'pointer'}">
+          <ng-template pTemplate="header">
+            <div class="card__header">
+              <span class="card__title">{{ c.name }}</span>
+              <p-tag [value]="c.city" severity="success"></p-tag>
+            </div>
+          </ng-template>
+          <div class="card__body">
+            <p class="muted">Программ: {{ c.programs }}</p>
+          </div>
+        </p-card>
+      </ng-container>
+      <ng-template #centersSkeleton>
+        <p-skeleton width="100%" height="140px" class="skeleton" *ngFor="let _ of [1,2,3]"></p-skeleton>
+      </ng-template>
+    </div>
+  </div>
+</section>
+
+<!-- Топ программ -->
+<section class="section" aria-labelledby="programs-title">
+  <div class="container">
+    <div class="section__header">
+      <h2 id="programs-title">Популярные программы</h2>
+      <button pButton label="Смотреть все" class="p-button-text" (click)="goPrograms()"></button>
+    </div>
+
+    <div class="cards">
+      <p-card *ngFor="let p of programs()" class="card card--hover" (click)="openProgram(p.id)" [style]="{'cursor':'pointer'}">
+        <div class="card__body">
+          <div class="card__title">{{ p.title }}</div>
+          <div class="muted">Центр: {{ p.center }}</div>
+          <div class="muted">Лектор: {{ p.lecturer }}</div>
+        </div>
+        <ng-template pTemplate="footer">
+          <div class="card__footer">
+            <span class="price">{{ p.price | currency:'KZT':'symbol-narrow':'1.0-0' }}</span>
+            <button pButton icon="pi pi-angle-right" class="p-button-text" aria-label="Подробнее"></button>
+          </div>
+        </ng-template>
+      </p-card>
+    </div>
+  </div>
+</section>
+
+<!-- Лекторы -->
+<section class="section" aria-labelledby="lecturers-title">
+  <div class="container">
+    <div class="section__header">
+      <h2 id="lecturers-title">Лекторы</h2>
+      <button pButton label="Смотреть всех" class="p-button-text" (click)="goLecturers()"></button>
+    </div>
+
+    <div class="lecturers">
+      <div class="lecturer card--hover" *ngFor="let l of lecturers()">
+        <p-avatar label="{{ l.name[0] }}" shape="circle" size="large"></p-avatar>
+        <div class="lecturer__info">
+          <div class="name">{{ l.name }}</div>
+          <div class="muted">{{ l.role }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Почему TenEdu -->
+<section class="benefits" aria-label="Преимущества платформы">
+  <div class="container benefits__grid">
+    <p-card class="benefit card--hover">
+      <ng-template pTemplate="header"><i class="pi pi-filter"></i></ng-template>
+      <ng-template pTemplate="content"><h3>Умный поиск</h3><p class="muted">Фильтры по городам, цене, длительности, центрам и лекторам.</p></ng-template>
+    </p-card>
+    <p-card class="benefit card--hover">
+      <ng-template pTemplate="header"><i class="pi pi-comments"></i></ng-template>
+      <ng-template pTemplate="content"><h3>Отзывы и вопросы</h3><p class="muted">Обратная связь с администраторами центров.</p></ng-template>
+    </p-card>
+    <p-card class="benefit card--hover">
+      <ng-template pTemplate="header"><i class="pi pi-lock"></i></ng-template>
+      <ng-template pTemplate="content"><h3>Личные кабинеты</h3><p class="muted">Для пользователей и центров — безопасно и удобно.</p></ng-template>
+    </p-card>
+  </div>
+</section>
+
+<!-- Контакты / Интеграции -->
+<section class="contacts" aria-labelledby="contacts-title">
+  <div class="container">
+    <h2 id="contacts-title" class="sr-only">Контакты</h2>
+    <p>Есть вопросы? Свяжитесь с администратором платформы или напишите нам в мессенджеры.</p>
+    <div class="contacts__actions">
+      <a pButton href="mailto:admin@tenedu.kz" label="Email администратора" icon="pi pi-at"></a>
+      <a pButton href="#" label="Telegram" class="p-button-outlined" icon="pi pi-telegram"></a>
+      <a pButton href="#" label="WhatsApp" class="p-button-outlined" icon="pi pi-whatsapp"></a>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta" aria-label="Присоединиться">
+  <div class="container cta__inner">
+    <div>
+      <h2>Готовы обучать или учиться?</h2>
+      <p class="muted">Разместите учебный центр или найдите программу, которая вам подходит.</p>
+    </div>
+    <div class="cta__buttons">
+      <button pButton label="Разместить центр" icon="pi pi-building" class="p-button-success p-button-rounded" (click)="goCenters()"></button>
+      <button pButton label="Найти программу" icon="pi pi-search" class="p-button-rounded" (click)="goPrograms()"></button>
+    </div>
+  </div>
+</section>
+
+<footer class="footer" role="contentinfo">
+  <div class="container footer__grid">
+    <div class="footer__col">
+      <div class="brand">
+        <span class="brand__logo">T</span>
+        <span class="brand__name">TenEdu</span>
+      </div>
+      <p class="muted">Цифровая платформа обучения. Все права защищены.</p>
+    </div>
+    <div class="footer__col">
+      <div class="muted">© {{ currentYear || 2025 }}</div>
+      <div class="footer__links">
+        <a href="#" class="muted">Политика</a>
+        <a href="#" class="muted">Условия</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<p-scrollTop target="window"></p-scrollTop>
