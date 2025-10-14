@@ -1,0 +1,42 @@
+<!-- centers.page.html -->
+<section class="section">
+  <div class="container">
+    <div class="section__header">
+      <h2>Учебные центры</h2>
+      <span class="muted">{{ data.filteredCenters().length }} найдено</span>
+    </div>
+
+    <div class="controls">
+      <input pInputText placeholder="Поиск центра" [(ngModel)]="data.query" (ngModelChange)="onQueryChange($event)" />
+      <div class="cities">
+        <button pButton class="p-button-text" label="Все" (click)="data.city.set(null)"></button>
+        <button pButton class="p-button-text" *ngFor="let c of ['Астана','Алматы','Шымкент']"
+                [label]="c" (click)="data.city.set(c)"></button>
+      </div>
+    </div>
+
+    <div class="grid">
+      <p-card *ngFor="let c of data.filteredCenters()"
+              class="card card--hover"
+              (click)="open(c.id)"
+              [style]="{'cursor':'pointer'}">
+
+        <ng-template pTemplate="header">
+          <div class="card__img" *ngIf="c.image">
+            <img [src]="c.image" [alt]="c.name" loading="lazy" referrerpolicy="no-referrer">
+          </div>
+
+          <div class="card__header">
+            <span class="card__title">{{ c.name }}</span>
+            <p-tag [value]="c.city" severity="success"></p-tag>
+          </div>
+        </ng-template>
+
+        <div class="card__body">
+          <p class="muted">Программ: {{ c.programs }}</p>
+          <p class="muted">{{ c.about }}</p>
+        </div>
+      </p-card>
+    </div>
+  </div>
+</section>

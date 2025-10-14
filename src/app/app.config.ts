@@ -36,7 +36,7 @@ const MyPreset = definePreset(Aura, {
       800: '{teal.800}',
       900: '{teal.900}',
       950: '{teal.950}'
-    }
+    },
   }
 });
 

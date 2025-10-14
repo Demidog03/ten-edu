@@ -1,0 +1,6 @@
+.section { padding:24px 0; }
+.grid { display:grid; grid-template-columns:repeat(12,1fr); gap:12px; }
+.lecturer { grid-column: span 12; display:flex; gap:12px; align-items:center; padding:12px; border-radius: var(--p-card-border-radius); background: var(--p-card-background); border:1px solid var(--p-card-border-color); box-shadow: var(--p-card-shadow); }
+@media (min-width:640px){ .lecturer{ grid-column: span 6; } }
+@media (min-width:960px){ .lecturer{ grid-column: span 4; } }
+.name{ font-weight:600; color: var(--p-text-color); }

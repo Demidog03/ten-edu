@@ -1,0 +1,28 @@
+/* centers.page.scss */
+@use '../home/home.page' as *; /* можно переиспользовать базовые классы */
+.section { padding: 24px 0; background: var(--p-content-background); }
+.section__header { display:flex; align-items:center; justify-content:space-between; }
+.controls { display:flex; gap:12px; align-items:center; flex-wrap:wrap; margin-bottom: 40px; }
+.grid { display:grid; grid-template-columns:repeat(12,1fr); gap:12px; }
+.card { grid-column: span 12; background: var(--p-card-background); border: 1px solid var(--p-card-border-color); border-radius: var(--p-card-border-radius); box-shadow: var(--p-card-shadow); }
+@media (min-width:640px){ .card{ grid-column: span 6; } }
+@media (min-width:960px){ .card{ grid-column: span 4; } }
+.card__img {
+  height: 140px;
+  overflow: hidden;
+  border-top-left-radius: var(--p-card-border-radius);
+  border-top-right-radius: var(--p-card-border-radius);
+  background: var(--p-surface-100);
+}
+
+.card__img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform .3s ease;
+  display: block;
+}
+
+.card:hover .card__img img {
+  transform: scale(1.05);
+}

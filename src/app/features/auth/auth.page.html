@@ -1,0 +1,85 @@
+<section class="section">
+  <div class="container auth">
+    <p-card class="auth__card">
+      <h2 class="auth__title">Войти / Регистрация</h2>
+      <p class="auth__subtitle muted">Добро пожаловать! Введите данные или войдите через соцсети.</p>
+
+      <!-- уведомления -->
+      <p-toast position="top-center"></p-toast>
+
+      <div class="grid">
+        <!-- Email -->
+        <p-inputgroup>
+          <p-inputgroup-addon>
+            <i class="pi pi-at"></i>
+          </p-inputgroup-addon>
+          <input pInputText [(ngModel)]="email" placeholder="Email" />
+        </p-inputgroup>
+
+        <!-- Пароль -->
+        <p-inputgroup>
+          <p-inputgroup-addon><i class="pi pi-lock"></i></p-inputgroup-addon>
+          <p-password
+            [(ngModel)]="password"
+            [toggleMask]="true"
+            [feedback]="false"
+            placeholder="Пароль"
+            (ngModelChange)="onPasswordChange($event)">
+          </p-password>
+        </p-inputgroup>
+
+        <!-- Индикатор силы пароля (фишка) -->
+        <div class="pw-strength" *ngIf="password">
+          <p-progressBar [value]="pwStrength.value"></p-progressBar>
+          <small [class]="pwStrength.class">{{ pwStrength.label }}</small>
+        </div>
+
+        <!-- Запомнить/Забыли -->
+        <div class="row-between">
+          <p-checkbox
+            inputId="remember"
+            [(ngModel)]="remember"></p-checkbox>
+          <label for="remember" class="muted">Запомнить меня</label>
+
+          <button pButton class="p-button-text p-button-sm"
+                  type="button"
+                  (click)="openReset()">
+            Забыли пароль?
+          </button>
+        </div>
+
+        <!-- Действия -->
+        <button pButton label="Войти" (click)="submitLogin()"></button>
+        <button pButton label="Регистрация" class="p-button-text" (click)="submitRegister()"></button>
+
+        <p-divider align="center">или</p-divider>
+
+        <!-- Соц-логин (моки) -->
+        <div class="social">
+          <button pButton type="button" (click)="social('Google')">
+            <i class="pi pi-google"></i><span>Войти через Google</span>
+          </button>
+          <button pButton type="button" class="p-button-outlined" (click)="social('Telegram')">
+            <i class="pi pi-telegram"></i><span>Через Telegram</span>
+          </button>
+        </div>
+      </div>
+    </p-card>
+  </div>
+
+  <!-- Модалка восстановления -->
+  <p-dialog [(visible)]="resetOpen" [modal]="true" [style]="{width:'430px'}"
+            header="Восстановление пароля" [dismissableMask]="true">
+    <div class="grid">
+      <p>Укажите email — мы отправим ссылку для сброса (мок).</p>
+      <p-inputgroup>
+        <span class="p-inputgroup-addon"><i class="pi pi-at"></i></span>
+        <input pInputText [(ngModel)]="resetEmail" placeholder="Email" />
+      </p-inputgroup>
+      <div class="row-between">
+        <span></span>
+        <button pButton label="Отправить" (click)="sendReset()"></button>
+      </div>
+    </div>
+  </p-dialog>
+</section>

@@ -1,0 +1,18 @@
+<section class="section">
+  <div class="container">
+    <div class="section__header">
+      <h2>Лекторы</h2>
+      <span class="muted">{{ data.lecturers().length }} экспертов</span>
+    </div>
+
+    <div class="grid">
+      <div class="lecturer card--hover" *ngFor="let l of data.lecturers()">
+        <p-avatar label="{{ l.name[0] }}" shape="circle" size="large"></p-avatar>
+        <div class="lecturer__info">
+          <div class="name">{{ l.name }}</div>
+          <div class="muted">{{ l.role }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

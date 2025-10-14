@@ -1,0 +1,78 @@
+<header>
+  <p-menubar class="topbar" [model]="[]">
+    <ng-template pTemplate="start">
+      <div class="brand" (click)="go('/')">
+        <span class="brand__logo">T</span>
+        <span class="brand__name">TenEdu</span>
+      </div>
+    </ng-template>
+
+    <ng-template pTemplate="end">
+      <div class="topnav" role="navigation" aria-label="Основная навигация">
+        <!-- Десктоп-навигация -->
+        <div class="nav-links hide-sm">
+          <button pButton label="Центры" class="p-button-text" (click)="go('/centers')"></button>
+          <button pButton label="Программы" class="p-button-text" (click)="go('/programs')"></button>
+          <button pButton label="Лекторы" class="p-button-text" (click)="go('/lecturers')"></button>
+          <p-divider layout="vertical"></p-divider>
+          <div class="lang-switch">
+            <button pButton label="KZ" class="p-button-text"></button>
+            <button pButton label="RU" class="p-button-text"></button>
+          </div>
+          <p-divider layout="vertical"></p-divider>
+          <button pButton class="p-button-text"
+                  [icon]="isDark ? 'pi pi-sun' : 'pi pi-moon'"
+                  [label]="isDark ? 'Светлая' : 'Тёмная'"
+                  (click)="toggleTheme()"></button>
+          <button pButton icon="pi pi-user" class="p-button-text" (click)="go('/auth')" label="Войти"></button>
+        </div>
+
+        <!-- Мобильная кнопка-бургер -->
+        <button pButton icon="pi pi-bars" class="p-button-text show-sm"
+                (click)="toggleMobile()" aria-label="Открыть меню"></button>
+      </div>
+    </ng-template>
+  </p-menubar>
+</header>
+
+<!-- Мобильное меню -->
+<p-drawer [(visible)]="mobileOpen" position="right" [modal]="true" [dismissible]="true" aria-label="Мобильное меню">
+  <div class="mobile-menu">
+    <button pButton label="Центры" class="p-button-text p-button-lg" (click)="go('/centers'); toggleMobile()"></button>
+    <button pButton label="Программы" class="p-button-text p-button-lg" (click)="go('/programs'); toggleMobile()"></button>
+    <button pButton label="Лекторы" class="p-button-text p-button-lg" (click)="go('/lecturers'); toggleMobile()"></button>
+    <p-divider></p-divider>
+    <div class="lang-switch">
+      <button pButton label="KZ" class="p-button-text"></button>
+      <button pButton label="RU" class="p-button-text"></button>
+    </div>
+    <p-divider></p-divider>
+    <button pButton class="p-button-outlined w-full"
+            [icon]="isDark ? 'pi pi-sun' : 'pi pi-moon'"
+            [label]="isDark ? 'Светлая тема' : 'Тёмная тема'"
+            (click)="toggleTheme()"></button>
+    <button pButton label="Войти" icon="pi pi-user" class="w-full" (click)="go('/auth'); toggleMobile()"></button>
+  </div>
+</p-drawer>
+
+<main id="main-content">
+  <router-outlet></router-outlet>
+</main>
+
+<footer class="footer" role="contentinfo">
+  <div class="footer__grid">
+    <div class="footer__col">
+      <div class="brand"><span class="brand__logo">T</span><span class="brand__name">TenEdu</span></div>
+      <p class="muted">Цифровая платформа обучения.</p>
+    </div>
+    <div class="footer__col">
+      <div class="muted">© {{ year }}</div>
+      <div class="footer__links">
+        <a href="#" class="muted">Политика</a>
+        <a href="#" class="muted">Условия</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<p-scrollTop target="window"></p-scrollTop>

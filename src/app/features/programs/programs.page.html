@@ -1,0 +1,28 @@
+<section class="section">
+  <div class="container">
+    <div class="section__header">
+      <h2>Программы</h2>
+      <span class="muted">{{ data.filteredPrograms().length }} найдено</span>
+    </div>
+
+    <div class="controls">
+      <input pInputText placeholder="Поиск по программам или центрам" [(ngModel)]="data.query" (ngModelChange)="onQueryChange($event)" />
+    </div>
+
+    <div class="grid">
+      <p-card *ngFor="let p of data.filteredPrograms()" class="card">
+        <div class="card__body">
+          <div class="card__title">{{ p.title }}</div>
+          <div class="muted">Центр: {{ p.center }}</div>
+          <div class="muted">Лектор: {{ p.lecturer }}</div>
+        </div>
+        <ng-template pTemplate="footer">
+          <div class="card__footer">
+            <span class="price">{{ p.price | currency:'KZT':'symbol-narrow':'1.0-0' }}</span>
+            <button pButton label="Оставить заявку" icon="pi pi-send" class="p-button-rounded p-button-sm"></button>
+          </div>
+        </ng-template>
+      </p-card>
+    </div>
+  </div>
+</section>
