@@ -1,0 +1,123 @@
+<ng-container *ngIf="prog() as p; else notfound">
+  <section class="hero">
+    <div class="cover" *ngIf="p.image">
+      <img
+        [src]="picSum(p.image, 1600, 600, 1)"
+        [srcset]="
+      picSum(p.image, 1600, 600, 1) + ' 1600w, ' +
+      picSum(p.image, 1920, 720, 1) + ' 1920w, ' +
+      picSum(p.image, 2560, 960, 1) + ' 2560w, ' +
+      picSum(p.image, 1920, 720, 2) + ' 3840w'
+    "
+        sizes="100vw"
+        decoding="async"
+        fetchpriority="high"
+        alt=""
+      />
+    </div>
+
+
+    <div class="container hero__inner">
+      <div class="title">
+        <h1>{{ p.title }}</h1>
+        <div class="chips">
+          <p-tag [value]="p.mode" severity="info"></p-tag>
+          <p-tag [value]="p.level" severity="success"></p-tag>
+          <p-tag [value]="p.language" severity="secondary"></p-tag>
+          <p-tag [value]="'⭐ ' + p.rating" severity="warn"></p-tag>
+          <p-tag [value]="p.certificate ? 'Сертификат' : 'Без сертификата'" severity="contrast"></p-tag>
+        </div>
+      </div>
+
+      <div class="buy">
+        <div class="price">{{ p.price | currency:'KZT':'symbol-narrow':'1.0-0' }}</div>
+        <div class="muted">Старт: {{ p.start | date:'d MMMM' }} • Длительность: {{ p.durationHours }} ч</div>
+        <div class="muted">{{ p.enrolled }}/{{ p.seats }} мест</div>
+        <div class="program-cta">
+          <button pButton label="Оставить заявку" icon="pi pi-send"></button>
+          <button pButton label="К списку" class="p-button-text" (click)="backToPrograms()"></button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container grid">
+      <p-card class="card">
+        <ng-template pTemplate="header">
+          <div class="card__header"><span class="card__title">Что в программе</span></div>
+        </ng-template>
+        <div class="card__body" style="padding: 0">
+          <p-accordion [multiple]="true" [value]="['0']" class="custom-accordion">
+            <p-accordion-panel value="0">
+              <p-accordion-header>
+                <span><i class="pi pi-info-circle mr-2"></i>
+                Что входит в программу</span>
+              </p-accordion-header>
+              <p-accordion-content>
+                <p>
+                  Подробный обзор тем курса, практические задания и мини-тесты после каждого модуля.
+                  Материалы и записи остаются у слушателей навсегда.
+                </p>
+              </p-accordion-content>
+            </p-accordion-panel>
+
+            <p-accordion-panel value="1">
+              <p-accordion-header>
+                <span><i class="pi pi-calendar mr-2"></i>
+                Формат и расписание</span>
+              </p-accordion-header>
+              <p-accordion-content>
+                <ul>
+                  <li>Формат: онлайн / офлайн</li>
+                  <li>Длительность: 40 часов</li>
+                  <li>Старт: 20 ноября 2025</li>
+                  <li>Занятия: по вечерам, вт–чт</li>
+                </ul>
+              </p-accordion-content>
+            </p-accordion-panel>
+
+            <p-accordion-panel value="2">
+              <p-accordion-header>
+                <span><i class="pi pi-users mr-2"></i>
+                Для кого подойдёт</span>
+              </p-accordion-header>
+              <p-accordion-content>
+                <p>
+                  Программа рассчитана на инженеров и технических специалистов, желающих повысить
+                  квалификацию в области энергетики и автоматизации.
+                </p>
+              </p-accordion-content>
+            </p-accordion-panel>
+          </p-accordion>
+        </div>
+      </p-card>
+
+      <p-card class="card">
+        <ng-template pTemplate="header">
+          <div class="card__header"><span class="card__title">Центр и лектор</span></div>
+        </ng-template>
+        <div class="card__body" style="padding: 0">
+          <div class="mini">
+            <div class="mini-22"><i class="pi pi-building"></i></div>
+            <div>
+              <div class="label">Учебный центр</div>
+              <div class="value">{{ p.center }}</div>
+            </div>
+          </div>
+          <div class="mini">
+            <p-avatar [image]="lecturerAvatar()"></p-avatar>
+            <div>
+              <div class="label">Лектор</div>
+              <div class="value">{{ p.lecturer }}</div>
+            </div>
+          </div>
+        </div>
+      </p-card>
+    </div>
+  </section>
+</ng-container>
+
+<ng-template #notfound>
+  <section class="section"><div class="container"><p>Программа не найдена.</p></div></section>
+</ng-template>

@@ -4,7 +4,13 @@
 .topbar { position: sticky; top: 0; z-index: 10; border-bottom: 1px solid var(--p-surface-border); backdrop-filter: saturate(1.2) blur(6px); }
 .topbar .p-menubar { margin: 0; border: 0; background: color-mix(in oklab, var(--p-menubar-background) 92%, transparent); }
 .topnav { display: flex; align-items: center; }
-.nav-links { display: flex; align-items: center; gap: 8px; }
+.nav-links {
+  display: flex; align-items: center; gap: 8px;
+
+  button {
+    color: var(--p-text-color);
+  }
+}
 .brand { display: inline-flex; align-items: center; gap: 8px; font-weight: 800; cursor: pointer; color: var(--p-text-color); }
 .brand__logo { width: 28px; height: 28px; border-radius: 8px; display: grid; place-items: center; background: var(--p-primary-color); color: var(--p-primary-contrast-color); font-weight: 900; }
 
@@ -16,7 +22,7 @@
   .show-sm { display: none; }
 }
 
-.footer { padding: 20px; background: var(--p-content-background); border-top: 1px solid var(--p-surface-border); }
+.footer { padding: 20px; border-top: 1px solid var(--p-surface-border); background: color-mix(in oklab, var(--p-menubar-background) 92%, transparent); }
 .footer__grid { display: grid; grid-template-columns: 1fr; gap: 12px; align-items: center; }
 .footer__col { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
 .footer__links { display: flex; gap: 12px; }
@@ -32,6 +38,6 @@
   min-height: 100svh;
 }
 
-main { flex: 1 1 auto; }
+main { flex: 1 1 auto; background: light-dark(var(--p-surface-50), var(--p-surface-950)); }
 
-header, footer { flex: 0 0 auto; }
+header, footer { flex: 0 0 auto;  }

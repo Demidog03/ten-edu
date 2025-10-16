@@ -12,6 +12,17 @@ export const routes: Routes = [
       { path: 'programs', loadComponent: () => import('./features/programs/programs.page').then(m => m.ProgramsPage) },
       { path: 'lecturers', loadComponent: () => import('./features/lecturers/lecturers.page').then(m => m.LecturersPage) },
       { path: 'auth', loadComponent: () => import('./features/auth/auth.page').then(m => m.AuthPage) },
+      {
+        path: 'lecturers/:id',
+        loadComponent: () =>
+          import('./features/lecturer-detail/lecturer-detail.page').then(m => m.LecturerDetailPage)
+      },
+      {
+        path: 'programs/:id',
+        loadComponent: () =>
+          import('./features/program-detail/program-detail.page').then(m => m.ProgramDetailPage)
+      },
+      { path: 'news/:id', loadComponent: () => import('./features/news-details/news-detail.page').then(m => m.NewsDetailPage) },
     ]
   },
   { path: '**', loadComponent: () => import('./features/not-found/not-found.page').then(m => m.NotFoundPage) }

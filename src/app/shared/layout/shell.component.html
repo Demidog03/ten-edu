@@ -3,7 +3,7 @@
     <ng-template pTemplate="start">
       <div class="brand" (click)="go('/')">
         <span class="brand__logo">T</span>
-        <span class="brand__name">TenEdu</span>
+        <span class="brand__name">Vista Expert</span>
       </div>
     </ng-template>
 
@@ -62,7 +62,7 @@
 <footer class="footer" role="contentinfo">
   <div class="footer__grid">
     <div class="footer__col">
-      <div class="brand"><span class="brand__logo">T</span><span class="brand__name">TenEdu</span></div>
+      <div class="brand"><span class="brand__logo">T</span><span class="brand__name">Vista Expert</span></div>
       <p class="muted">Цифровая платформа обучения.</p>
     </div>
     <div class="footer__col">
@@ -75,4 +75,4 @@
   </div>
 </footer>
 
-<p-scrollTop target="window"></p-scrollTop>
+<p-scrollTop target="window" [buttonProps]="{ severity: 'contrast', raised: true, rounded: true }"></p-scrollTop>

@@ -25,7 +25,6 @@
 .hero {
   position: relative;
   padding: 64px 0;
-  background: var(--p-content-background);
   border-bottom: 1px solid var(--p-surface-border);
   overflow: hidden;
 }
@@ -75,7 +74,7 @@
 }
 
 /* ---------- Stats ---------- */
-.stats { padding: 12px 0; background: var(--p-content-background); }
+.stats { padding: 12px 0; }
 .stats__grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 12px; }
 .stat {
   grid-column: span 12;
@@ -111,22 +110,12 @@
 .card, .skeleton { grid-column: span 12; }
 .card {
   background: linear-gradient(to bottom, color-mix(in oklab, var(--p-primary-color) 3%, var(--p-card-background)), var(--p-card-background));
-  border: 1px solid color-mix(in oklab, var(--p-primary-color) 15%, var(--p-card-border-color));
   border-radius: var(--p-card-border-radius);
   box-shadow: var(--p-card-shadow);
   position: relative;
   overflow: hidden;
 }
-.card::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, var(--p-primary-color), transparent);
-  opacity: 0.5;
-}
+
 @media (min-width: 640px) { .card, .skeleton { grid-column: span 6; } }
 @media (min-width: 960px) { .card, .skeleton { grid-column: span 4; } }
 .card__header {
@@ -134,7 +123,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: color-mix(in oklab, var(--p-primary-color) 4%, var(--p-card-background));
+  background: color-mix(in oklab, var(--p-primary-color) 10%, var(--p-card-background));
   border-bottom: 1px solid color-mix(in oklab, var(--p-primary-color) 10%, var(--p-card-border-color));
 }
 .card__title { font-weight: 700; font-size: 16px; color: var(--p-text-color); }
@@ -172,7 +161,7 @@
 .lecturer__info .name { font-weight: 600; color: var(--p-text-color); }
 
 /* ---------- Benefits ---------- */
-.benefits { padding: 16px 0 24px; background: var(--p-content-background); }
+.benefits { padding: 16px 0 24px; }
 .benefits__grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 12px; }
 .benefit {
   grid-column: span 12;
@@ -187,7 +176,7 @@
 .benefit::after {
   content: "";
   position: absolute;
-  top: -50%;
+  top: 0;
   right: -50%;
   width: 100%;
   height: 100%;
@@ -200,7 +189,7 @@
 @media (min-width: 960px) { .benefit { grid-column: span 4; } }
 
 /* ---------- Contacts ---------- */
-.contacts { padding: 8px 0 32px; text-align: center; background: var(--p-content-background); }
+.contacts { padding: 8px 0 32px; text-align: center; }
 .contacts p { color: var(--p-text-muted-color); }
 .contacts__actions { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-top: 8px; }
 
@@ -217,7 +206,7 @@
 @media (min-width: 960px) { .cta__inner { grid-template-columns: 1fr auto; } }
 
 /* ---------- Footer ---------- */
-.footer { padding: 20px 0; background: var(--p-content-background); border-top: 1px solid var(--p-surface-border); }
+.footer { padding: 20px 0; border-top: 1px solid var(--p-surface-border); }
 .footer__grid { display: grid; grid-template-columns: 1fr; gap: 12px; align-items: center; }
 .footer__col { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
 .footer__links { display: flex; gap: 12px; }
@@ -229,3 +218,134 @@
 .mobile-menu { display: grid; gap: 8px; }
 .mobile-menu .lang-switch { display: flex; gap: 8px; justify-content: center; }
 .w-full { width: 100%; }
+
+/* --- Card media (centers images) --- */
+.card__media {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: var(--p-surface-200);
+  overflow: hidden;
+  position: relative;
+}
+
+.card__media::after {
+  /* лёгкий градиент для читабельности верхней границы */
+  content: "";
+  position: absolute; inset: 0;
+  background: linear-gradient(to bottom, color-mix(in oklab, var(--p-primary-color) 5%, transparent), transparent 30%);
+  pointer-events: none;
+  opacity: .35;
+}
+
+.card__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform .4s ease;
+}
+
+.card.card--hover:hover .card__media img {
+  transform: scale(1.03);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card.card--hover:hover .card__media img { transition: none; transform: none; }
+}
+
+.avatar-ring {
+  box-shadow: 0 0 0 2px var(--p-content-background), 0 0 0 4px color-mix(in oklab, var(--p-primary-color) 40%, transparent);
+  border-radius: 9999px;
+}
+
+.card__cover { position: relative; height: 160px; overflow: hidden; }
+.card__cover img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.cover-badges { position: absolute; left: 12px; bottom: 12px; display: flex; gap: 8px; }
+.meta { display: flex; gap: 12px; margin-top: 8px; flex-wrap: wrap; }
+.meta i { margin-right: 6px; color: var(--p-primary-color); }
+
+/* --- News carousel --- */
+.news-carousel { margin-top: 8px; }
+
+.news-card {
+  height: 98%;
+  display: grid;
+  grid-template-rows: 160px auto;
+  border-radius: var(--p-card-border-radius);
+  background: var(--p-card-background);
+  border: 1px solid color-mix(in oklab, var(--p-primary-color) 12%, var(--p-card-border-color));
+  box-shadow: var(--p-card-shadow);
+  text-decoration: none;
+  color: inherit;
+  overflow: hidden;
+  margin: 0 6px;
+}
+
+.news-media {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  background: var(--p-surface-200);
+}
+
+.news-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform .45s ease;
+}
+
+.news-card:hover .news-media img {
+  transform: scale(1.04);
+}
+
+.news-tag {
+  position: absolute;
+  left: 12px;
+  top: 12px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 800;
+  background: color-mix(in oklab, var(--p-primary-color) 18%, var(--p-content-background));
+  z-index: 10;
+}
+
+.news-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 20px;
+}
+
+.news-title {
+  font-weight: 800;
+  color: var(--p-text-color);
+  line-height: 1.2;
+  margin-bottom: 6px;
+  font-size: 16px;
+}
+
+.news-excerpt {
+  margin: 0 0 10px;
+}
+
+.news-meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--p-text-muted-color);
+}
+
+.news-meta i {
+  color: var(--p-primary-color);
+}
+
+@media (min-width: 960px) {
+  .news-card {
+    grid-template-rows: 180px auto;
+  }
+}

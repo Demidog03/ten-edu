@@ -1,7 +1,7 @@
 <section class="hero" aria-labelledby="hero-title">
   <div class="container hero__grid">
     <div class="hero__content">
-      <h1 id="hero-title">TenEdu — агрегатор учебных центров</h1>
+      <h1 id="hero-title">Vista Expert — агрегатор учебных центров</h1>
       <p>Находите программы обучения, лекторов и учебные центры. Подавайте заявки и получайте консультации.</p>
 
       <div class="hero__actions" role="search">
@@ -29,7 +29,7 @@
       </div>
     </div>
 
-    <div class="hero__media" aria-hidden="true">
+    <div class="hero__media " aria-hidden="true">
       <div class="hero__card">
         <i class="pi pi-graduation-cap"></i>
         <div>
@@ -64,6 +64,37 @@
   </div>
 </section>
 
+<!-- Новости -->
+<section class="section" aria-labelledby="news-title">
+  <div class="container">
+    <div class="section__header">
+      <h2 id="news-title">Новости</h2>
+      <button pButton label="Все новости" class="p-button-text"></button>
+    </div>
+
+    <p-carousel [value]="news()" [numVisible]="3" [numScroll]="3" [circular]="false" [responsiveOptions]="responsive">
+
+    <ng-template pTemplate="item" let-n >
+        <a  class="news-card card--hover" (click)="goToNews()">
+          <div class="news-media">
+            <img [src]="n.image" [alt]="n.title" loading="lazy" />
+            <span class="news-tag">{{ n.tag }}</span>
+          </div>
+          <div class="news-body">
+            <div class="news-title">{{ n.title }}</div>
+            <p class="news-excerpt muted">{{ n.excerpt }}</p>
+            <div class="news-meta">
+              <i class="pi pi-calendar"></i>
+              <span>{{ n.date | date:'d MMMM' }}</span>
+            </div>
+          </div>
+        </a>
+      </ng-template>
+    </p-carousel>
+  </div>
+</section>
+
+
 <!-- Топ центров -->
 <section class="section" aria-labelledby="centers-title">
   <div class="container">
@@ -74,20 +105,34 @@
 
     <div class="cards">
       <ng-container *ngIf="!loading(); else centersSkeleton">
-        <p-card *ngFor="let c of centers()" class="card card--hover" (click)="openCenter(c.id)" [style]="{'cursor':'pointer'}">
+        <p-card *ngFor="let c of centers().slice(0, 6)"
+                class="card card--hover"
+                (click)="openCenter(c.id)"
+                [style]="{'cursor':'pointer'}">
+
           <ng-template pTemplate="header">
+            <!-- Фото центра -->
+            <a class="card__media" [attr.aria-label]="c.name">
+              <img [src]="c.image"
+                   [alt]="'Фото: ' + c.name"
+                   loading="lazy"
+                   (error)="imgFallback($event)" />
+            </a>
+
             <div class="card__header">
               <span class="card__title">{{ c.name }}</span>
               <p-tag [value]="c.city" severity="success"></p-tag>
             </div>
           </ng-template>
+
           <div class="card__body">
             <p class="muted">Программ: {{ c.programs }}</p>
           </div>
         </p-card>
       </ng-container>
+
       <ng-template #centersSkeleton>
-        <p-skeleton width="100%" height="140px" class="skeleton" *ngFor="let _ of [1,2,3]"></p-skeleton>
+        <p-skeleton width="100%" height="220px" class="skeleton" *ngFor="let _ of [1,2,3]"></p-skeleton>
       </ng-template>
     </div>
   </div>
@@ -102,19 +147,38 @@
     </div>
 
     <div class="cards">
-      <p-card *ngFor="let p of programs()" class="card card--hover" (click)="openProgram(p.id)" [style]="{'cursor':'pointer'}">
+      <p-card *ngFor="let p of data.filteredPrograms().slice(0, 6)" class="card card--hover"
+              (click)="openProgram(p.id)" [style]="{'cursor':'pointer'}">
+
+        <ng-template pTemplate="header">
+          <div class="card__cover" *ngIf="p.image">
+            <img [src]="p.image" alt="" />
+            <div class="cover-badges">
+              <p-tag [value]="p.mode" severity="info"></p-tag>
+              <p-tag [value]="p.level" severity="success"></p-tag>
+            </div>
+          </div>
+        </ng-template>
+
         <div class="card__body">
           <div class="card__title">{{ p.title }}</div>
-          <div class="muted">Центр: {{ p.center }}</div>
-          <div class="muted">Лектор: {{ p.lecturer }}</div>
+          <div class="muted">Центр: {{ p.center }} • Лектор: {{ p.lecturer }}</div>
+          <div class="meta">
+            <span><i class="pi pi-clock"></i> {{ p.durationHours }} ч</span>
+            <span><i class="pi pi-calendar"></i> {{ p.start | date:'d MMM' }}</span>
+            <span><i class="pi pi-star-fill"></i> {{ p.rating }}</span>
+            <span><i class="pi pi-check-circle"></i> {{ p.certificate ? 'Сертификат' : 'Без сертификата' }}</span>
+          </div>
         </div>
+
         <ng-template pTemplate="footer">
           <div class="card__footer">
+            <span class="muted">{{ p.enrolled }}/{{ p.seats }} мест</span>
             <span class="price">{{ p.price | currency:'KZT':'symbol-narrow':'1.0-0' }}</span>
-            <button pButton icon="pi pi-angle-right" class="p-button-text" aria-label="Подробнее"></button>
           </div>
         </ng-template>
       </p-card>
+
     </div>
   </div>
 </section>
@@ -127,15 +191,23 @@
       <button pButton label="Смотреть всех" class="p-button-text" (click)="goLecturers()"></button>
     </div>
 
+
     <div class="lecturers">
-      <div class="lecturer card--hover" *ngFor="let l of lecturers()">
-        <p-avatar label="{{ l.name[0] }}" shape="circle" size="large"></p-avatar>
+      <div class="lecturer card--hover" *ngFor="let l of lecturers().slice(0, 9)">
+        <p-avatar
+          [image]="l.avatar"
+          shape="circle"
+          size="large"
+          class="avatar-ring"
+          (onImageError)="l.avatar = ''"></p-avatar>
+
         <div class="lecturer__info">
           <div class="name">{{ l.name }}</div>
           <div class="muted">{{ l.role }}</div>
         </div>
       </div>
     </div>
+
   </div>
 </section>
 
@@ -163,7 +235,7 @@
     <h2 id="contacts-title" class="sr-only">Контакты</h2>
     <p>Есть вопросы? Свяжитесь с администратором платформы или напишите нам в мессенджеры.</p>
     <div class="contacts__actions">
-      <a pButton href="mailto:admin@tenedu.kz" label="Email администратора" icon="pi pi-at"></a>
+      <a pButton href="mailto:admin@vista.expert.kz" label="Email администратора" icon="pi pi-at"></a>
       <a pButton href="#" label="Telegram" class="p-button-outlined" icon="pi pi-telegram"></a>
       <a pButton href="#" label="WhatsApp" class="p-button-outlined" icon="pi pi-whatsapp"></a>
     </div>

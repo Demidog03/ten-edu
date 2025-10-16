@@ -7,14 +7,62 @@
     <p class="muted">{{ c.city }} • Программ: {{ c.programs }}</p>
 
     <h3>Программы</h3>
-    <div class="grid">
-      <p-card *ngFor="let p of programs()" class="card">
+
+    <div class="prog-grid">
+      <p-card
+        *ngFor="let p of programs()"
+        class="prog-card card--hover"
+        (click)="openProgram(p.id)"
+        [style]="{'cursor':'pointer'}"
+        [attr.aria-label]="'Открыть «' + p.title + '»'"
+      >
+        <!-- Обложка -->
+        <ng-template pTemplate="header">
+          <div class="thumb">
+            <img
+              [src]="picSum(p.image ?? ('prog' + p.id), 900, 420, 1)"
+              [srcset]="
+            picSum(p.image ?? ('prog' + p.id), 900, 420, 1)   + ' 900w, '  +
+            picSum(p.image ?? ('prog' + p.id), 1200, 560, 1) + ' 1200w, ' +
+            picSum(p.image ?? ('prog' + p.id), 1600, 720, 1) + ' 1600w, ' +
+            picSum(p.image ?? ('prog' + p.id), 1200, 560, 2) + ' 2400w'
+          "
+              sizes="(min-width: 960px) 33vw, 100vw"
+              alt=""
+              decoding="async"
+              loading="lazy"
+            />
+          </div>
+        </ng-template>
+
+        <!-- Тело -->
         <div class="card__body">
-          <div class="card__title">{{ p.title }}</div>
-          <div class="muted">Лектор: {{ p.lecturer }}</div>
-          <div class="muted">Цена: {{ p.price | currency:'KZT':'symbol-narrow':'1.0-0' }}</div>
+          <div class="tags">
+            <p-tag *ngIf="p.level" [value]="p.level" severity="success"></p-tag>
+            <p-tag *ngIf="p.mode"  [value]="p.mode"  severity="info"></p-tag>
+          </div>
+          <div class="title">{{ p.title }}</div>
+          <div class="meta">
+            <span><i class="pi pi-user"></i>{{ p.lecturer }}</span>
+            <span *ngIf="p.durationHours"><i class="pi pi-clock"></i>{{ p.durationHours }} ч</span>
+          </div>
         </div>
+
+        <!-- Футер -->
+        <ng-template pTemplate="footer">
+          <div class="card__footer">
+            <span class="price">{{ p.price | currency:'KZT':'symbol-narrow':'1.0-0' }}</span>
+            <button
+              pButton
+              icon="pi pi-angle-right"
+              class="p-button-text"
+              aria-label="Подробнее"
+              (click)="$event.stopPropagation(); openProgram(p.id)"
+            ></button>
+          </div>
+        </ng-template>
       </p-card>
     </div>
+
   </div>
 </section>

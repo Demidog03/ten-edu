@@ -1,9 +1,49 @@
 /* centers.page.scss */
 @use '../home/home.page' as *; /* можно переиспользовать базовые классы */
-.section { padding: 24px 0; background: var(--p-content-background); }
+.section { padding: 24px 0; }
 .section__header { display:flex; align-items:center; justify-content:space-between; }
 .controls { display:flex; gap:12px; align-items:center; margin-bottom:12px; flex-wrap:wrap; }
 .grid { display:grid; grid-template-columns:repeat(12,1fr); gap:12px; }
 .card { grid-column: span 12; background: var(--p-card-background); border:1px solid var(--p-card-border-color); border-radius: var(--p-card-border-radius); box-shadow: var(--p-card-shadow); }
 @media (min-width:640px){ .card{ grid-column: span 6; } }
 @media (min-width:960px){ .card{ grid-column: span 4; } }
+
+/* Сетка карточек программ */
+.prog-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 12px;
+}
+
+.prog-card { grid-column: span 12; }
+@media (min-width: 640px) { .prog-card { grid-column: span 6; } }
+@media (min-width: 960px) { .prog-card { grid-column: span 4; } }
+
+/* Обложка */
+.thumb {
+  height: 160px;
+  overflow: hidden;
+  background: var(--p-surface-100);
+  border-bottom: 1px solid var(--p-card-border-color);
+}
+.thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  image-rendering: auto;
+}
+
+/* Теги, заголовок, мета */
+.tags { display: flex; gap: 6px; margin-bottom: 6px; }
+.title { font-weight: 700; color: var(--p-text-color); margin-bottom: 6px; }
+.meta {
+  display: flex; gap: 12px; flex-wrap: wrap; color: var(--p-text-muted-color); font-size: 13px;
+}
+.meta i { margin-right: 6px; color: var(--p-primary-color); }
+
+/* Футер */
+.card__footer {
+  display: flex; align-items: center; justify-content: space-between;
+  padding-top: 6px;
+}
+.price { font-weight: 800; color: var(--p-text-color); }

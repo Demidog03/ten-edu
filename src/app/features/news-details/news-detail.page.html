@@ -1,0 +1,54 @@
+<ng-container *ngIf="item() as n; else notfound">
+  <!-- Hero / cover -->
+  <section class="hero">
+    <div class="cover" *ngIf="n.image">
+      <img [src]="n.image" [alt]="n.title" loading="lazy" />
+      <span class="tag">{{ n.tag }}</span>
+    </div>
+
+    <div class="container hero__inner">
+      <div class="title">
+        <button pButton class="p-button-text back" icon="pi pi-arrow-left" label="Назад" (click)="back()"></button>
+        <h1>{{ n.title }}</h1>
+        <div class="meta muted">
+          <i class="pi pi-calendar"></i>
+          <span>{{ n.date | date:'d MMMM y' }}</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Content -->
+  <section class="section">
+    <div class="container grid">
+      <p-card class="card">
+        <div class="card__body article" [innerHTML]="html()"></div>
+      </p-card>
+
+      <p-card class="card">
+        <ng-template pTemplate="header">
+          <div class="card__header"><span class="card__title">Коротко</span></div>
+        </ng-template>
+        <div class="card__body">
+          <p class="muted">{{ n.excerpt }}</p>
+        </div>
+        <ng-template pTemplate="footer">
+          <div class="card__footer">
+            <button pButton label="Поделиться" icon="pi pi-share-alt"
+                    (click)="navigator.share({title: n.title, url: location.href})"></button>
+            <span class="muted">Тег: {{ n.tag }}</span>
+          </div>
+        </ng-template>
+      </p-card>
+    </div>
+  </section>
+</ng-container>
+
+<ng-template #notfound>
+  <section class="section">
+    <div class="container">
+      <p>Новость не найдена.</p>
+      <button pButton label="На главную" (click)="back()"></button>
+    </div>
+  </section>
+</ng-template>

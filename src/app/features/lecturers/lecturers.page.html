@@ -2,17 +2,50 @@
   <div class="container">
     <div class="section__header">
       <h2>Лекторы</h2>
-      <span class="muted">{{ data.lecturers().length }} экспертов</span>
+      <span class="muted">
+        {{ total() }} экспертов •
+        {{ page() * pageSize() + 1 }}–{{ Math.min((page() + 1) * pageSize(), total()) }}
+      </span>
     </div>
 
-    <div class="grid">
-      <div class="lecturer card--hover" *ngFor="let l of data.lecturers()">
-        <p-avatar label="{{ l.name[0] }}" shape="circle" size="large"></p-avatar>
-        <div class="lecturer__info">
-          <div class="name">{{ l.name }}</div>
-          <div class="muted">{{ l.role }}</div>
+    <div class="lect-grid">
+      <p-card
+        *ngFor="let l of pageLecturers()"
+        class="lect-card card--hover"
+        (click)="openLecturer(l.id)"
+        [style]="{'cursor':'pointer'}"
+        [attr.aria-label]="'Открыть «' + l.name + '»'"
+      >
+        <div class="lect-body">
+          <p-avatar [image]="avatar(l)" [label]="l.name[0]" shape="circle" size="large"></p-avatar>
+
+          <div class="info">
+            <div class="name">{{ l.name }}</div>
+            <div class="muted">{{ l.role }}</div>
+
+            <div class="meta">
+              <p-tag [value]="programCount(l) + ' программ(ы)'" severity="secondary"></p-tag>
+            </div>
+          </div>
+
+          <button
+            pButton
+            icon="pi pi-angle-right"
+            class="p-button-text go"
+            (click)="$event.stopPropagation(); openLecturer(l.id)"
+            aria-label="Подробнее"
+          ></button>
         </div>
-      </div>
+      </p-card>
     </div>
+
+    <p-paginator
+      class="lect-paginator"
+      [first]="page() * pageSize()"
+      [rows]="pageSize()"
+      [totalRecords]="total()"
+      [rowsPerPageOptions]="[9,12,18,24]"
+      (onPageChange)="onPageChange($event)">
+    </p-paginator>
   </div>
 </section>

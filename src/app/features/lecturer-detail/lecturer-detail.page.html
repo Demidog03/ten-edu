@@ -1,0 +1,78 @@
+<section class="section">
+  <div class="container header">
+    <div class="who">
+      <p-avatar [image]="lecturer.avatar" shape="circle" size="xlarge" class="avatar-ring"></p-avatar>
+      <div>
+        <h1 class="name">{{ lecturer.name }}</h1>
+        <div class="meta">
+          <p-tag [value]="lecturer.role" severity="success"></p-tag>
+          <span class="muted">• {{ lecturer.city }}</span>
+          <span class="muted">• ⭐ {{ lecturer.rating }}</span>
+          <span class="muted">• {{ lecturer.students }} слушателей</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button pButton icon="pi pi-building" label="Центры" class="p-button-text" (click)="goCenters()"></button>
+      <button pButton icon="pi pi-search"   label="Программы" class="p-button-text" (click)="goPrograms()"></button>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container grid">
+    <!-- BIO -->
+    <p-card class="card">
+      <ng-template pTemplate="header">
+        <div class="card__header"><span class="card__title">О лекторе</span></div>
+      </ng-template>
+      <div class="card__body">
+        <p class="muted">{{ lecturer.bio }}</p>
+      </div>
+      <ng-template pTemplate="footer">
+        <div class="chips">
+          <p-chip *ngFor="let s of lecturer.skills" [label]="s"></p-chip>
+        </div>
+      </ng-template>
+    </p-card>
+
+    <!-- Контакты -->
+    <p-card class="card">
+      <ng-template pTemplate="header">
+        <div class="card__header"><span class="card__title">Контакты</span></div>
+      </ng-template>
+      <div class="card__body contacts">
+        <div><i class="pi pi-at"></i><a [href]="'mailto:'+lecturer.contacts.email">{{ lecturer.contacts.email }}</a></div>
+        <div><i class="pi pi-telegram"></i><span>{{ lecturer.contacts.telegram }}</span></div>
+        <div><i class="pi pi-phone"></i><span>{{ lecturer.contacts.phone }}</span></div>
+      </div>
+    </p-card>
+  </div>
+</section>
+
+<!-- Курсы -->
+<section class="section">
+  <div class="container">
+    <div class="section__header">
+      <h2>Курсы и ближайшие потоки</h2>
+      <button pButton label="Все программы" class="p-button-text" (click)="goPrograms()"></button>
+    </div>
+
+    <div class="cards">
+      <p-card *ngFor="let p of programs" class="card card--hover" (click)="goProgram(p.id)" [style]="{'cursor':'pointer'}">
+        <div class="card__body">
+          <div class="card__title">{{ p.title }}</div>
+          <div class="muted">Центр: {{ p.center }}</div>
+          <div class="muted">Старт: {{ p.date }} • Длительность: {{ p.duration }}</div>
+        </div>
+        <ng-template pTemplate="footer">
+          <div class="card__footer">
+            <span class="price">{{ p.price | currency:'KZT':'symbol-narrow':'1.0-0' }}</span>
+            <button pButton icon="pi pi-angle-right" class="p-button-text" aria-label="Подробнее"></button>
+          </div>
+        </ng-template>
+      </p-card>
+    </div>
+  </div>
+</section>

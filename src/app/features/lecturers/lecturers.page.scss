@@ -1,6 +1,45 @@
-.section { padding:24px 0; }
-.grid { display:grid; grid-template-columns:repeat(12,1fr); gap:12px; }
-.lecturer { grid-column: span 12; display:flex; gap:12px; align-items:center; padding:12px; border-radius: var(--p-card-border-radius); background: var(--p-card-background); border:1px solid var(--p-card-border-color); box-shadow: var(--p-card-shadow); }
-@media (min-width:640px){ .lecturer{ grid-column: span 6; } }
-@media (min-width:960px){ .lecturer{ grid-column: span 4; } }
-.name{ font-weight:600; color: var(--p-text-color); }
+@use '../home/home.page' as *;
+
+.section { padding: 24px 0; }
+
+.lect-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.lect-card { grid-column: span 12; }
+@media (min-width: 640px) { .lect-card { grid-column: span 6; } }
+@media (min-width: 960px) { .lect-card { grid-column: span 4; } }
+
+.lect-body {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 12px;
+}
+
+.info .name {
+  font-weight: 700;
+  color: var(--p-text-color);
+  margin-bottom: 2px;
+}
+
+.info .meta { margin-top: 6px; }
+
+.go { margin-left: 4px; }
+
+/* каркас p-card под общий стиль */
+.p-card.lect-card {
+  background: linear-gradient(
+      to bottom,
+      color-mix(in oklab, var(--p-primary-color) 3%, var(--p-card-background)),
+      var(--p-card-background)
+  );
+  border: 1px solid color-mix(in oklab, var(--p-primary-color) 12%, var(--p-card-border-color));
+  box-shadow: var(--p-card-shadow);
+  border-radius: var(--p-card-border-radius);
+}
+
+.lect-paginator { margin-top: 12px; }

@@ -16,7 +16,7 @@
     </div>
 
     <div class="grid">
-      <p-card *ngFor="let c of data.filteredCenters()"
+      <p-card *ngFor="let c of pagedCenters()"
               class="card card--hover"
               (click)="open(c.id)"
               [style]="{'cursor':'pointer'}">
@@ -25,7 +25,6 @@
           <div class="card__img" *ngIf="c.image">
             <img [src]="c.image" [alt]="c.name" loading="lazy" referrerpolicy="no-referrer">
           </div>
-
           <div class="card__header">
             <span class="card__title">{{ c.name }}</span>
             <p-tag [value]="c.city" severity="success"></p-tag>
@@ -37,6 +36,20 @@
           <p class="muted">{{ c.about }}</p>
         </div>
       </p-card>
+    </div>
+
+    <!-- Пагинация -->
+    <p-paginator
+      class="paginator"
+      [first]="page() * pageSize()"
+      [rows]="pageSize()"
+      [totalRecords]="total()"
+      [rowsPerPageOptions]="[6,12,18,24]"
+      (onPageChange)="onPageChange($event)">
+    </p-paginator>
+
+    <div class="muted paginator-hint">
+      Показаны {{ firstItemIndex() + 1 }}–{{ lastItemIndex() }} из {{ total() }}
     </div>
   </div>
 </section>

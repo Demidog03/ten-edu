@@ -2,27 +2,66 @@
   <div class="container">
     <div class="section__header">
       <h2>Программы</h2>
-      <span class="muted">{{ data.filteredPrograms().length }} найдено</span>
+      <span class="muted">{{ total() }} найдено</span>
     </div>
 
     <div class="controls">
-      <input pInputText placeholder="Поиск по программам или центрам" [(ngModel)]="data.query" (ngModelChange)="onQueryChange($event)" />
+      <input
+        pInputText
+        placeholder="Поиск по программам или центрам"
+        [(ngModel)]="data.query"
+        (ngModelChange)="onQueryChange($event)"
+      />
     </div>
 
     <div class="grid">
-      <p-card *ngFor="let p of data.filteredPrograms()" class="card">
+      <p-card
+        *ngFor="let p of pagedPrograms()"
+        class="card card--hover"
+        [style]="{ cursor: 'pointer' }"
+        (click)="openProgram(p.id)"
+      >
+        <ng-template pTemplate="header">
+          <div class="card__cover" *ngIf="p.image">
+            <img [src]="p.image" alt="" />
+            <div class="cover-badges">
+              <p-tag [value]="p.mode" severity="info"></p-tag>
+              <p-tag [value]="p.level" severity="success"></p-tag>
+            </div>
+          </div>
+        </ng-template>
+
         <div class="card__body">
           <div class="card__title">{{ p.title }}</div>
-          <div class="muted">Центр: {{ p.center }}</div>
-          <div class="muted">Лектор: {{ p.lecturer }}</div>
+          <div class="muted">Центр: {{ p.center }} • Лектор: {{ p.lecturer }}</div>
+          <div class="meta">
+            <span><i class="pi pi-clock"></i> {{ p.durationHours }} ч</span>
+            <span><i class="pi pi-calendar"></i> {{ p.start | date: 'd MMM' }}</span>
+            <span><i class="pi pi-star-fill"></i> {{ p.rating }}</span>
+            <span><i class="pi pi-check-circle"></i> {{ p.certificate ? 'Сертификат' : 'Без сертификата' }}</span>
+          </div>
         </div>
+
         <ng-template pTemplate="footer">
           <div class="card__footer">
-            <span class="price">{{ p.price | currency:'KZT':'symbol-narrow':'1.0-0' }}</span>
-            <button pButton label="Оставить заявку" icon="pi pi-send" class="p-button-rounded p-button-sm"></button>
+            <span class="muted">{{ p.enrolled }}/{{ p.seats }} мест</span>
+            <span class="price">{{ p.price | currency: 'KZT':'symbol-narrow':'1.0-0' }}</span>
           </div>
         </ng-template>
       </p-card>
+    </div>
+
+    <p-paginator
+      class="paginator"
+      [first]="page() * pageSize()"
+      [rows]="pageSize()"
+      [totalRecords]="total()"
+      [rowsPerPageOptions]="[6, 12, 18, 24]"
+      (onPageChange)="onPageChange($event)"
+    ></p-paginator>
+
+    <div class="muted paginator-hint">
+      Показаны {{ total() ? firstItemIndex() + 1 : 0 }}–{{ lastItemIndex() }} из {{ total() }}
     </div>
   </div>
 </section>
