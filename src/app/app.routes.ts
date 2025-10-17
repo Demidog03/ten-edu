@@ -11,6 +11,7 @@ export const routes: Routes = [
       { path: 'centers/:id', loadComponent: () => import('./features/center-detail/center-detail.page').then(m => m.CenterDetailPage) },
       { path: 'programs', loadComponent: () => import('./features/programs/programs.page').then(m => m.ProgramsPage) },
       { path: 'lecturers', loadComponent: () => import('./features/lecturers/lecturers.page').then(m => m.LecturersPage) },
+      { path: 'faq', loadComponent: () => import('./features/faq/faq.page').then(m => m.FaqPage) },
       { path: 'auth', loadComponent: () => import('./features/auth/auth.page').then(m => m.AuthPage) },
       {
         path: 'lecturers/:id',

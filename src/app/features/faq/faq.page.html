@@ -1,0 +1,55 @@
+<section class="faq">
+  <div class="faq__header">
+    <h1 class="faq__title">Часто задаваемые вопросы</h1>
+    <p class="faq__subtitle muted">Ответы на популярные вопросы о платформе и обучении</p>
+  </div>
+
+  <p-card>
+    <div class="faq__controls" role="search">
+      <p-inputgroup>
+        <p-inputgroup-addon><i class="pi pi-search" aria-hidden="true"></i></p-inputgroup-addon>
+        <input pInputText [ngModel]="query()" (ngModelChange)="query.set($event)" type="search" placeholder="Поиск по вопросам и ответам" aria-label="Поиск по FAQ" />
+      </p-inputgroup>
+      <p-select
+        [options]="categoryOptions()"
+        [ngModel]="selectedCategory()"
+        (ngModelChange)="selectedCategory.set($event)"
+        optionLabel="label"
+        optionValue="value"
+        [style]="{width:'260px'}"
+        placeholder="Категория"
+        aria-label="Фильтр по категориям">
+      </p-select>
+    </div>
+
+    <p-divider></p-divider>
+
+    <ng-container *ngIf="filtered().length; else noResults">
+      <section *ngFor="let cat of filtered()" class="faq__category">
+        <h2 class="faq__category-title">{{ cat.name }}</h2>
+        <p-accordion [multiple]="true">
+          <p-accordion-panel *ngFor="let item of cat.items">
+            <p-accordion-header>
+              <div>{{ item.q }}</div>
+            </p-accordion-header>
+            <p-accordion-content>
+              <div class="faq__answer">
+                <p>{{ item.a }}</p>
+              </div>
+            </p-accordion-content>
+          </p-accordion-panel>
+        </p-accordion>
+      </section>
+    </ng-container>
+
+    <ng-template #noResults>
+      <div class="empty-state">
+        <i class="pi pi-info-circle" aria-hidden="true"></i>
+        <div>
+          <div class="empty-state__title">Ничего не найдено</div>
+          <div class="empty-state__text">Измените запрос или выберите другую категорию.</div>
+        </div>
+      </div>
+    </ng-template>
+  </p-card>
+</section>
