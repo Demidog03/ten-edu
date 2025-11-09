@@ -25,7 +25,13 @@
                   [icon]="isDark ? 'pi pi-sun' : 'pi pi-moon'"
                   [label]="isDark ? 'Светлая' : 'Тёмная'"
                   (click)="toggleTheme()"></button>
-          <button pButton icon="pi pi-user" class="p-button-text" (click)="go('/auth')" label="Войти"></button>
+          @if (!isLoggedIn()) {
+            <button pButton icon="pi pi-user" class="p-button-text" (click)="go('/auth')" label="Войти"></button>
+          }
+          @else {
+            <p-menu #userMenu [model]="userMenuItems" [popup]="true"></p-menu>
+            <button pButton icon="pi pi-user" class="p-button-text" label="Аккаунт" (click)="userMenu.toggle($event)"></button>
+          }
         </div>
 
         <!-- Мобильная кнопка-бургер -->
@@ -53,7 +59,13 @@
             [icon]="isDark ? 'pi pi-sun' : 'pi pi-moon'"
             [label]="isDark ? 'Светлая тема' : 'Тёмная тема'"
             (click)="toggleTheme()"></button>
-    <button pButton label="Войти" icon="pi pi-user" class="w-full" (click)="go('/auth'); toggleMobile()"></button>
+    @if (!isLoggedIn()) {
+      <button pButton label="Войти" icon="pi pi-user" class="w-full" (click)="go('/auth'); toggleMobile()"></button>
+    }
+    @else {
+      <button pButton label="Профиль" icon="pi pi-id-card" class="w-full" (click)="go('/profile'); toggleMobile()"></button>
+      <button pButton label="Выйти" icon="pi pi-sign-out" class="w-full" (click)="logout(); toggleMobile()"></button>
+    }
   </div>
 </p-drawer>
 

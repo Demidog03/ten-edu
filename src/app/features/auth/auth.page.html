@@ -1,8 +1,10 @@
 <section class="section">
   <div class="container auth">
     <p-card class="auth__card">
-      <h2 class="auth__title">Войти / Регистрация</h2>
-      <p class="auth__subtitle muted">Добро пожаловать! Введите данные или войдите через соцсети.</p>
+      <h2 class="auth__title">{{ registerMode ? 'Регистрация' : 'Войти' }}</h2>
+      <p class="auth__subtitle muted">
+        {{ registerMode ? 'Создайте новый аккаунт' : 'Добро пожаловать! Введите данные или войдите через соцсети.' }}
+      </p>
 
       <!-- уведомления -->
       <p-toast position="top-center"></p-toast>
@@ -13,7 +15,40 @@
           <p-inputgroup-addon>
             <i class="pi pi-at"></i>
           </p-inputgroup-addon>
-          <input pInputText [(ngModel)]="email" placeholder="Email" />
+          <input pInputText type="email" [(ngModel)]="email" placeholder="Email" maxlength="254" />
+        </p-inputgroup>
+
+        <!-- Full name (Регистрация) -->
+        <p-inputgroup *ngIf="registerMode">
+          <p-inputgroup-addon><i class="pi pi-user"></i></p-inputgroup-addon>
+          <input pInputText [(ngModel)]="fullName" placeholder="ФИО" maxlength="255" />
+        </p-inputgroup>
+
+        <!-- Phone (Регистрация, optional) -->
+        <p-inputgroup *ngIf="registerMode">
+          <p-inputgroup-addon><i class="pi pi-phone"></i></p-inputgroup-addon>
+
+          <!-- Маска телефона РФ/KZ, значение без форматирующих символов -->
+          <p-inputmask
+            mask="+7 999 999 9999"
+            [unmask]="true"
+            [autoClear]="false"
+            [slotChar]="'_'"
+            [(ngModel)]="phone"
+            placeholder="+7 777 777 7777">
+          </p-inputmask>
+        </p-inputgroup>
+
+        <!-- Role (Регистрация) -->
+        <p-inputgroup *ngIf="registerMode">
+          <p-inputgroup-addon><i class="pi pi-verified"></i></p-inputgroup-addon>
+          <p-select
+            [options]="roles"
+            [(ngModel)]="role"
+            optionLabel="label"
+            optionValue="value"
+            placeholder="Роль">
+          </p-select>
         </p-inputgroup>
 
         <!-- Пароль -->
@@ -28,29 +63,46 @@
           </p-password>
         </p-inputgroup>
 
-        <!-- Индикатор силы пароля (фишка) -->
-        <div class="pw-strength" *ngIf="password">
+        <!-- Подтверждение пароля (Регистрация) -->
+        <p-inputgroup *ngIf="registerMode">
+          <p-inputgroup-addon><i class="pi pi-lock"></i></p-inputgroup-addon>
+          <p-password
+            [(ngModel)]="passwordConfirm"
+            [toggleMask]="true"
+            [feedback]="false"
+            placeholder="Повторите пароль">
+          </p-password>
+        </p-inputgroup>
+
+        <!-- Индикатор силы пароля (фишка, только при регистрации) -->
+        <div class="pw-strength" *ngIf="registerMode && password">
           <p-progressBar [value]="pwStrength.value"></p-progressBar>
           <small [class]="pwStrength.class">{{ pwStrength.label }}</small>
         </div>
 
-        <!-- Запомнить/Забыли -->
-        <div class="row-between">
-          <p-checkbox
-            inputId="remember"
-            [(ngModel)]="remember"></p-checkbox>
-          <label for="remember" class="muted">Запомнить меня</label>
+        <!-- Запомнить/Забыли (только вход) -->
+<!--        <div class="row-between" *ngIf="!registerMode">-->
+<!--          <p-checkbox-->
+<!--            inputId="remember"-->
+<!--            [(ngModel)]="remember"></p-checkbox>-->
+<!--          <label for="remember" class="muted">Запомнить меня</label>-->
 
-          <button pButton class="p-button-text p-button-sm"
-                  type="button"
-                  (click)="openReset()">
-            Забыли пароль?
-          </button>
-        </div>
+<!--          <button pButton class="p-button-text p-button-sm"-->
+<!--                  type="button"-->
+<!--                  (click)="openReset()">-->
+<!--            Забыли пароль?-->
+<!--          </button>-->
+<!--        </div>-->
 
         <!-- Действия -->
-        <button pButton label="Войти" (click)="submitLogin()"></button>
-        <button pButton label="Регистрация" class="p-button-text" (click)="submitRegister()"></button>
+        <ng-container *ngIf="!registerMode; else regActions">
+          <button pButton label="Войти" (click)="submitLogin()"></button>
+          <button pButton label="Регистрация" class="p-button-text" (click)="registerMode = true"></button>
+        </ng-container>
+        <ng-template #regActions>
+          <button pButton label="Зарегистрироваться" (click)="submitRegister()"></button>
+          <button pButton label="У меня уже есть аккаунт" class="p-button-text" (click)="registerMode = false"></button>
+        </ng-template>
       </div>
     </p-card>
   </div>

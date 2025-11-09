@@ -1,13 +1,21 @@
-import {ApplicationConfig, isDevMode, provideZonelessChangeDetection} from '@angular/core';
+import {ApplicationConfig, isDevMode, LOCALE_ID, provideZonelessChangeDetection} from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
-import { provideHttpClient } from '@angular/common/http';
+import {provideHttpClient, withFetch, withInterceptors} from '@angular/common/http';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { providePrimeNG } from 'primeng/config';
 import Aura from '@primeuix/themes/aura';
 import { provideQueryClient } from '@ngneat/query';
 import { QueryClient } from '@tanstack/query-core';
 import {definePreset} from '@primeuix/themes';
+import {API_BASE_URL} from './core/http/api.config';
+import {environment} from './core/environments/environment';
+import {authInterceptor} from './core/http/auth.interceptor';
+import {errorInterceptor} from './core/http/error.interceptor';
+import { registerLocaleData } from '@angular/common';
+import ru from '@angular/common/locales/ru';
+
+registerLocaleData(ru);
 
 function browserOnlyQueryDevtools() {
   const inBrowser = typeof window !== 'undefined' && typeof document !== 'undefined';
@@ -98,5 +106,15 @@ export const appConfig: ApplicationConfig = {
     })),
 
     ...browserOnlyQueryDevtools(),
+
+    provideHttpClient(
+      withFetch(),
+      withInterceptors([authInterceptor, errorInterceptor])
+    ),
+    {
+      provide: API_BASE_URL,
+      useValue: environment.apiBaseUrl
+    },
+    { provide: LOCALE_ID, useValue: 'ru-RU' },
   ],
 };
