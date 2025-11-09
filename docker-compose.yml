@@ -1,0 +1,29 @@
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: ten-edu-dev
+    container_name: ten-edu-frontend
+    ports:
+      - "4200:4200"
+    environment:
+      CHOKIDAR_USEPOLLING: "1"
+      NG_CLI_ANALYTICS: "false"
+      HOST: 0.0.0.0
+      PORT: 4200
+      CI: "true"
+    user: "root"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    command: >
+      sh -lc '
+        mkdir -p /app/node_modules && chmod -R 0777 /app/node_modules;
+        if [ ! -f node_modules/@angular/cli/bin/ng.js ]; then
+          echo "[init] installing deps...";
+          pnpm install --frozen-lockfile;
+        fi;
+        echo "[startDocker] ng serve...";
+        pnpm startDocker
+      '
